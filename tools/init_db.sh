@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS t_user (
     username        VARCHAR(255)  NOT NULL,
     password        VARCHAR(255)  NOT NULL,
     enabled         BOOLEAN       NOT NULL,
-    PRIMARY KEY (userName)
+    gmail           VARCHAR(255)  UNIQUE,
+    PRIMARY KEY (username)
 );
 
 CREATE TABLE IF NOT EXISTS t_member (
@@ -84,6 +85,33 @@ CREATE TABLE IF NOT EXISTS t_billing_detail_data (
         REFERENCES t_billing_data(billing_ym, member_id)
 );
 
+CREATE TABLE IF NOT EXISTS t_gmailuser_invation (
+    username        VARCHAR(255) NOT NULL,
+    password        VARCHAR(255) NOT NULL,
+    gmail           VARCHAR(255) NOT NULL,
+    token           INT NOT NULL,
+    expiration      TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP + INTERVAL '5 minutes'),
+    PRIMARY KEY (username, gmail)
+);
+
+CREATE OR REPLACE FUNCTION prevent_gmail_insert_update() RETURNS trigger AS $$
+BEGIN
+    IF current_setting('app.gmail_update', true) = 'ON'
+        THEN RETURN NEW;
+    END IF;
+    IF TG_OP = 'INSERT' AND NEW.gmail IS NOT NULL
+        THEN RAISE EXCEPTION 'gmailの直接登録は禁止です';
+    END IF;
+    IF TG_OP = 'UPDATE' AND NEW.gmail IS DISTINCT FROM OLD.gmail
+        THEN RAISE EXCEPTION 'gmailの直接更新は禁止です';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS trg_prevent_gmail ON t_user;
+CREATE TRIGGER trg_prevent_gmail BEFORE INSERT OR UPDATE ON t_user FOR EACH ROW EXECUTE FUNCTION prevent_gmail_insert_update();
+
+
 __EOS__
 
 if [ "${IS_INIT_DATA}" = "init_data" ]; then
@@ -95,10 +123,11 @@ DELETE FROM t_member;
 DELETE FROM t_charge;
 DELETE FROM t_billing_status;
 DELETE FROM t_billing_data;
-DELETE FROM T_billing_detail_data;
+DELETE FROM t_billing_detail_data;
+DELETE FROM t_gmailuser_invation;
 
 -- user/password
-INSERT INTO T_USER VALUES ('user', '$argon2id$v=19$m=14,t=2,p=1$eVczdXhrMWlDZERWUnZWdA$HjSDtkidFBp49L0k8ZlvtTVcKkC//uOkIjDRiYbGIWg', true);
+INSERT INTO T_USER VALUES ('user', '$argon2id$v=19$m=14,t=2,p=1$argon2id$v=19$m=16384,t=2,p=1$RlFPZHlKa1k4OGRqTEtkNg$0OglBcOo6kATVL9zUpUaJGdPQN5oeh4Okinvqm80R7o', true);
 
 INSERT INTO T_MEMBER VALUES (nextval('t_member_seq'), 'yamada@example.com', '山田　太郎', '東京都千代田区1-1-1', '2026-01-01', NULL, 1, NOW(), NOW());
 
