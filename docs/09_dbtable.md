@@ -117,3 +117,18 @@
 | 2   | 確定           | is_commit   | BOOLEAN   |      | FALSE             |                           |
 | 3   | レコード作成日 | created_at  | TIMESTAMP |      | CURRENT_TIMESTAMP |                           |
 | 4   | レコード更新日 | modified_at | TIMESTAMP |      | CURRENT_TIMESTAMP |                           |
+
+## ユーザー情報◆T_USER
+
+論理テーブル名: ユーザー情報
+
+論理テーブル名: T_USER
+
+凡例：P=主キー、N=NULL許可、U=ユニーク
+
+| No. | 論理列名       | 物理列名    | データ型  | 制約 | デフォルト値      | 備考                      |
+| --- | -------------- | ----------- | --------- | ---- | ----------------- | ------------------------- |
+| 1   | ユーザー名     | username   | VARCHAR(255) | P    |                   |                           |
+| 2   | パスワード     | password   | VARCHAR(255) |      |                  | argon2でハッシュ化した文字列を格納 |
+| 3   | 権限          | enable      | BOOLEAN   |      |                   |                           |
+| 4   | Gメール        | gmail      | VARCHAR(255) | P,N  |                   |                           |
