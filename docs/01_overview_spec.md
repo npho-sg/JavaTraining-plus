@@ -218,6 +218,7 @@
 ## 概念モデル
 
 ![](media/diagram-concept-model.png)
+
 ![](media/diagram-concept-model-userlogin.png)
 
 ソース：[Java研修.drawio] → 概念モデルシート
@@ -233,6 +234,16 @@
 - データの閲覧、登録、修正は「サービス管理アプリケーション(KAP)」にて行う。
 
 - 月次、日次など定期的に行う一括処理は「サービス管理バッチ処理(KBT)」にて行う。
+
+### ログインシステムの関係性
+
+![](media/diagram-system-relationship-login.png)
+
+- 全ての情報は、サービス管理データベース(K_SRVMAN)の各テーブルに格納される。
+
+- 通常ログイン、Google認証を使うユーザーの登録は「サービス管理アプリケーション(KAP)」にて行う。
+
+- Google認証によるログインは「Google認証サービス」にて行う。
 
 ### サービス管理アプリケーションのフロー
 
