@@ -85,13 +85,14 @@ CREATE TABLE IF NOT EXISTS t_billing_detail_data (
         REFERENCES t_billing_data(billing_ym, member_id)
 );
 
-CREATE TABLE IF NOT EXISTS t_gmailuser_invation (
+CREATE TABLE IF NOT EXISTS t_gmailuser_add (
     username        VARCHAR(255) NOT NULL,
     password        VARCHAR(255) NOT NULL,
     gmail           VARCHAR(255) NOT NULL,
     token           INT NOT NULL,
     expiration      TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP + INTERVAL '5 minutes'),
-    PRIMARY KEY (username, gmail)
+    limit           INT,
+    PRIMARY KEY (username)
 );
 
 CREATE OR REPLACE FUNCTION prevent_gmail_insert_update() RETURNS trigger AS $$
