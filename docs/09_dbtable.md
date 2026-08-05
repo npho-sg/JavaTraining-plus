@@ -118,9 +118,9 @@
 | 3   | レコード作成日 | created_at  | TIMESTAMP |      | CURRENT_TIMESTAMP |                           |
 | 4   | レコード更新日 | modified_at | TIMESTAMP |      | CURRENT_TIMESTAMP |                           |
 
-## ユーザー情報◆T_USER
+## 管理者情報◆T_USER
 
-論理テーブル名: ユーザー情報
+論理テーブル名: 管理者情報
 
 論理テーブル名: T_USER
 
@@ -133,17 +133,17 @@
 | 3   | 権限           | enable      | BOOLEAN   |      |                   |                           |
 | 4   | Gメール        | gmail      | VARCHAR(255) | U,N  |                   | 直接書き込み禁止、トリガーでエラーが発生<br> Gメールユーザー承認を通して書き込む |
 
-## Gメールユーザー承認◆T_GMAILUSER_INVITATION
+## Gメール管理者認可◆T_GMAILUSER_AUTHORIZATION
 
-論理テーブル名: Gメールユーザー情報
+論理テーブル名: Gメール管理者認可
 
-論理テーブル名: T_GMAILUSER_INVITATION
+論理テーブル名: T_GMAILUSER_AUTHORIZATION
 
 凡例：P=主キー、N=NULL許可、U=ユニーク
 
 | No. | 論理列名       | 物理列名    | データ型  | 制約 | デフォルト値      | 備考                      |
 | --- | -------------- | ----------- | --------- | ---- | ----------------- | ------------------------- |
-| 1   | Gメールユーザー名 | username   | VARCHAR(255) |      |                   |                           |
+| 1   | ユーザー名     | username   | VARCHAR(255) |      |                   |                           |
 | 2   | パスワード     | password   | VARCHAR(255) |      |                   | argon2でハッシュ化した文字列を格納 |
 | 3   | Gメール        | gmail      | VARCHAR(255) |      |                   |                           |
 | 4   | 認証キー       | token      | int      |      |                   |                           |
