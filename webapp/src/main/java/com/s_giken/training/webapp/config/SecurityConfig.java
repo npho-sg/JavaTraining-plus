@@ -19,49 +19,48 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    /**
-     * Spring Securityの設定
-     *
-     * @param http HttpSecurityオブジェクト
-     * @return SecurityFilterChainオブジェクト
-     * @throws Exception 例外全般
-     */
-    @Bean
-    SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(Customizer.withDefaults())
-                .headers((header) -> header
-                        .frameOptions((frame) -> frame.sameOrigin()))
-                .formLogin((form) -> form
-                        .loginPage("/login")
-                        .permitAll())
-                .logout(LogoutConfigurer::permitAll)
-                .authorizeHttpRequests((authorize) -> authorize
-                        // 特例として認証を無視するURL
-                        .requestMatchers(
-                                PathPatternRequestMatcher
-                                        .withDefaults()
-                                        .matcher("/.well-known/**"),
-                                PathPatternRequestMatcher
-                                        .withDefaults()
-                                        .matcher("/image/**"),
-                                PathPatternRequestMatcher
-                                        .withDefaults()
-                                        .matcher("/css/**"))
-                        .permitAll()
-                        // 特例以外のURLは要認証
-                        .anyRequest().authenticated());
+        /**
+         * Spring Securityの設定
+         *
+         * @param http HttpSecurityオブジェクト
+         * @return SecurityFilterChainオブジェクト
+         * @throws Exception 例外全般
+         */
+        @Bean
+        SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(Customizer.withDefaults())
+                                .headers((header) -> header.frameOptions((frame) -> frame.sameOrigin()))
+                                .formLogin((form) -> form.loginPage("/login").permitAll())
+                                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/userauth/google", true))
+                                .logout(LogoutConfigurer::permitAll)
+                                .authorizeHttpRequests((authorize) -> authorize
+                                                // 特例として認証を無視するURL
+                                                .requestMatchers(
+                                                                PathPatternRequestMatcher
+                                                                                .withDefaults()
+                                                                                .matcher("/.well-known/**"),
+                                                                PathPatternRequestMatcher
+                                                                                .withDefaults()
+                                                                                .matcher("/image/**"),
+                                                                PathPatternRequestMatcher
+                                                                                .withDefaults()
+                                                                                .matcher("/css/**"))
+                                                .permitAll()
+                                                // 特例以外のURLは要認証
+                                                .anyRequest()
+                                                .authenticated());
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    /**
-     * パスワードをArgon2idでハッシュ化するオブジェクトを生成する
-     *
-     * @return パスワードをハッシュ化するエンコーダーのオブジェクト
-     */
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
-    }
+        /**
+         * パスワードをArgon2idでハッシュ化するオブジェクトを生成する
+         *
+         * @return パスワードをハッシュ化するエンコーダーのオブジェクト
+         */
+        @Bean
+        PasswordEncoder passwordEncoder() {
+                return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+        }
 }
