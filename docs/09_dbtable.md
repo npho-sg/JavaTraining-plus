@@ -133,11 +133,11 @@
 | 3   | 権限           | enable      | BOOLEAN   |      |                   |                           |
 | 4   | Gメール        | gmail      | VARCHAR(255) | U,N  |                   | 直接書き込み禁止、トリガーでエラーが発生<br> Gメールユーザー承認を通して書き込む |
 
-## Gメール管理者認可◆T_GMAILUSER_AUTHORIZATION
+## Gmail管理者登録◆T_GMAILUSER_ADD
 
-論理テーブル名: Gメール管理者認可
+論理テーブル名: Gmail管理者登録
 
-論理テーブル名: T_GMAILUSER_AUTHORIZATION
+論理テーブル名: T_GMAILUSER_ADD
 
 凡例：P=主キー、N=NULL許可、U=ユニーク
 
