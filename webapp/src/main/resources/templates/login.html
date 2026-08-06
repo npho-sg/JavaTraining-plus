@@ -17,9 +17,12 @@
       <input type="password" name="password" id="password" required />
     </label>
     <button type="submit">ログイン</button>
-    <hr>
-    <a th:href="@{/oauth2/n/google}">Googleアカウントでログイン</a>
   </form>
+  <hr>
+  <div th:if="${param.googleError}" class="alert alert-danger" role="alert">
+    登録されていないGmailユーザーです。
+  </div>
+  <a th:href="@{/oauth2/authorization/google}">Googleでログイン</a>
 </div>
 
 </html>

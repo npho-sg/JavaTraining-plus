@@ -7,6 +7,9 @@ services:
       - type: bind
         source: ../..
         target: /workspaces/
+    secrets:
+      - GOOGLE_CLIENT_ID
+      - GOOGLE_CLIENT_SECRET
     command: sleep infinity
     networks:
       - default
@@ -27,6 +30,12 @@ services:
       - POSTGRES_PASSWORD=postgres
     networks:
       - default
+
+secrets:
+  GOOGLE_CLIENT_ID:
+    file: C:/Users/ho-nhat-phi/workspaceSecret/GOOGLE_CLIENT_ID
+  GOOGLE_CLIENT_SECRET:
+    file: C:/Users/ho-nhat-phi/workspaceSecret/GOOGLE_CLIENT_SECRET
 
 volumes:
   postgres-vol:

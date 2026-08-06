@@ -32,7 +32,9 @@ public class SecurityConfig {
                                 .csrf(Customizer.withDefaults())
                                 .headers((header) -> header.frameOptions((frame) -> frame.sameOrigin()))
                                 .formLogin((form) -> form.loginPage("/login").permitAll())
-                                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/userauth/google", true))
+                                .oauth2Login(oauth2 -> oauth2
+                                                .loginPage("/login")
+                                                .defaultSuccessUrl("/userauth/google", true))
                                 .logout(LogoutConfigurer::permitAll)
                                 .authorizeHttpRequests((authorize) -> authorize
                                                 // 特例として認証を無視するURL
