@@ -146,6 +146,7 @@
 | 1   | ユーザー名     | username   | VARCHAR(255) |      |                   |                           |
 | 2   | パスワード     | password   | VARCHAR(255) |      |                   | argon2でハッシュ化した文字列を格納 |
 | 3   | Gメール        | gmail      | VARCHAR(255) |      |                   |                           |
-| 4   | 認証キー       | token      | INT      |      |                   |                           |
+| 4   | 認証キー       | token      | VARCHAR  |      |                   |                           |
 | 5   | 有効期限       | expiration | TIMESTAMP  |      | CURRENT_TIMESTAMP<br> + INTERVAL '5 minutes' | 有効期限5分           |
-| 6   | 施行回数       | limit      | INT      |      |                   |                           |
+| 6   | 施行回数       | limitcount | INT      |      |                   |                           |
+| 7   | 登録ID        | add_id      | VARCHAR(26) | P    | GEN_RANDOM_UUID() | idがランダムに自動で採番される |

@@ -89,10 +89,11 @@ CREATE TABLE IF NOT EXISTS t_gmailuser_add (
     username        VARCHAR(255) NOT NULL,
     password        VARCHAR(255) NOT NULL,
     gmail           VARCHAR(255) NOT NULL,
-    token           INT NOT NULL,
+    token           VARCHAR NOT NULL,
     expiration      TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP + INTERVAL '5 minutes'),
-    limit           INT,
-    PRIMARY KEY (username)
+    limitcount      INT NOT NULL DEFAULT 0,
+    auth_id         UUID NOT NULL DEFAULT gen_random_uuid(),
+    PRIMARY KEY (auth_id)
 );
 
 CREATE OR REPLACE FUNCTION prevent_gmail_insert_update() RETURNS trigger AS $$
@@ -125,7 +126,7 @@ DELETE FROM t_charge;
 DELETE FROM t_billing_status;
 DELETE FROM t_billing_data;
 DELETE FROM t_billing_detail_data;
-DELETE FROM t_gmailuser_invation;
+DELETE FROM t_gmailuser_add;
 
 -- user/password
 INSERT INTO T_USER VALUES ('user', '$argon2id$v=19$m=14,t=2,p=1$argon2id$v=19$m=16384,t=2,p=1$RlFPZHlKa1k4OGRqTEtkNg$0OglBcOo6kATVL9zUpUaJGdPQN5oeh4Okinvqm80R7o', true);

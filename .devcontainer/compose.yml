@@ -10,6 +10,8 @@ services:
     secrets:
       - GOOGLE_CLIENT_ID
       - GOOGLE_CLIENT_SECRET
+      - MAIL_USERNAME
+      - MAIL_APP_PASSWORD
     command: sleep infinity
     networks:
       - default
@@ -36,6 +38,10 @@ secrets:
     file: C:/Users/ho-nhat-phi/workspaceSecret/GOOGLE_CLIENT_ID
   GOOGLE_CLIENT_SECRET:
     file: C:/Users/ho-nhat-phi/workspaceSecret/GOOGLE_CLIENT_SECRET
+  MAIL_USERNAME:
+    file: C:/Users/ho-nhat-phi/workspaceSecret/MAIL_USERNAME
+  MAIL_APP_PASSWORD:
+    file: C:/Users/ho-nhat-phi/workspaceSecret/MAIL_APP_PASSWORD
 
 volumes:
   postgres-vol:

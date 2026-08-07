@@ -20,9 +20,17 @@ public class UserAuthRepository {
     }
 
     // gmailユーザー一時登録
-    public void addToken(String username, String password, String gmail, int token) {
-        String sql = "INSERT INTO t_mailuser_add(username, passwprd, gmail, token)" + "VALUES(?, ?, ?, ?)";
+    public void tempRegist(String username, String password, String gmail, String token) {
+        String sql = "INSERT INTO t_gmailuser_add(username, password, gmail, token)"
+                + "VALUES(?, ?, ?, ?) RETURNING auth_id";
         jdbcTemplate.update(sql, username, password, gmail, token);
+    }
+
+    // 登録時トークン確認
+    public boolean compareToken(String gmail, String token, String uuid){
+        String sql = "SELECT gmail, token, expiration, limitcount FROM t_mailuser_add WHERE gmail = ? AND token = ? AND = ? ";
+        jdbcTemplate.
+
     }
 
 }
