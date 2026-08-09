@@ -5,6 +5,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.util.UUID;
+import org.springframework.ui.Model;
 
 @Controller
 public class AuthenticationController {
@@ -27,13 +30,19 @@ public class AuthenticationController {
         return "redirect:/";
     }
 
+    // トークン認証ページに遷移
     @GetMapping("/authentication/gmailauth")
-    public String gmailAuth() {
+    public String gmailAuth(@RequestParam UUID authid, Model model) {
+        model.addAttribute("authid", authid);
         return "authentication/gmailauth";
     }
 
+    // トークン認証ページからの受取
     @PostMapping("/authentication/gmailauth")
-    public void gmailAuthCommit() {
-
+    public void authToken(@RequestParam UUID authid, @RequestParam String token) {
+        if (!userAuthRepository.authToken(token, authid)) {
+            // エラー
+        }
+        userAuthRepository.authCommit(authid);
     }
 }

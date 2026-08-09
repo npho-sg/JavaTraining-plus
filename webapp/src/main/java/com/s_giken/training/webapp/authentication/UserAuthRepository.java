@@ -2,6 +2,7 @@ package com.s_giken.training.webapp.authentication;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import java.util.UUID;
 
 @Repository
 public class UserAuthRepository {
@@ -20,16 +21,23 @@ public class UserAuthRepository {
     }
 
     // gmailユーザー一時登録
-    public void tempRegist(String username, String password, String gmail, String token) {
+    public UUID tempRegist(String username, String password, String gmail, String token) {
         String sql = "INSERT INTO t_gmailuser_add(username, password, gmail, token)"
                 + "VALUES(?, ?, ?, ?) RETURNING auth_id";
-        jdbcTemplate.update(sql, username, password, gmail, token);
+        UUID authid = jdbcTemplate.queryForObject(sql, UUID.class, username, password, gmail, token);
+        return authid;
     }
 
     // 登録時トークン確認
-    public boolean compareToken(String gmail, String token, String uuid){
-        String sql = "SELECT gmail, token, expiration, limitcount FROM t_mailuser_add WHERE gmail = ? AND token = ? AND = ? ";
-        jdbcTemplate.
+    public boolean authToken(String token, UUID authid) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM t_gmailuser_add WHERE token = ? AND token = ?)";
+        return jdbcTemplate.queryForObject(sql, Boolean.class, token, authid);
+    }
+
+    public void authCommit(UUID authid) {
+        String sql = "SET app.gmail_update = 'ON';" + "INSERT INTO t_user (username, password, enable, gmail)"
+                + "SELECT username, password, TRUE, gmail" + "FROM t_gmailuser_add WHERE authid = ?";
+        jdbcTemplate.update(sql, authid);
 
     }
 

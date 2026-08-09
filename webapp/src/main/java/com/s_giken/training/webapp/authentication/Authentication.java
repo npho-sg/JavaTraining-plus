@@ -1,6 +1,7 @@
 package com.s_giken.training.webapp.authentication;
 
 import java.security.SecureRandom;
+import java.util.UUID;
 
 public class Authentication {
 
@@ -13,9 +14,9 @@ public class Authentication {
         String token = String.format("%06d", random.nextInt(1_000_000));
 
         UserAuthRepository auth = SpringContextHolder.getBean(UserAuthRepository.class);
-        auth.tempRegist(username, password, gmail, token);
+        UUID authid = auth.tempRegist(username, password, gmail, token);
         MailService mailservice = SpringContextHolder.getBean(MailService.class);
-        mailservice.sendTokenMail(gmail, token);
+        mailservice.sendTokenMail(gmail, token, authid);
 
     }
 }

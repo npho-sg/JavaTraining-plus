@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>メール認証</title>
+</head>
+
+<body>
+
+  <p>トークンを入力してくだい</p>
+
+  <form th:action="@{/authtication/gmail}" type="hidden" name="authid" th:value="${authid}">
+    <input type="text" name="token" required />
+    <button type="submit">送信</button>
+  </form>
+</body>
+
+</html>
