@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Authentication",
+            "request": "launch",
+            "mainClass": "com.s_giken.training.webapp.authentication.Authentication",
+            "projectName": "webapp"
+        },
+        {
+            "type": "java",
             "name": "WebApp",
             "request": "launch",
             "mainClass": "com.s_giken.training.webapp.WebappApplication",
@@ -20,7 +27,7 @@
             "args": [
                 "${input:inputParameter}"
             ]
-        },
+        }
     ],
     "inputs": [
         {

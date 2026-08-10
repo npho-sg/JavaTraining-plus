@@ -8,9 +8,19 @@
 
 <body>
 
-  <p>トークンを入力してくだい</p>
-
-  <form th:action="@{/authtication/gmail}" type="hidden" name="authid" th:value="${authid}">
+  <p>5分以内にトークンを入力して送信してください。</p>
+  <hr>
+  <div th:if="${param.tokenError}" style="color:red">
+    トークンが違います。正しいトークンを再入力してください。
+  </div>
+  <div th:if="${param.limitError}" style="color:red">
+    一定回数間違えてため、トークンを再発行しました。新しいトークンを入力してください。
+  </div>
+  <div th:if="${param.timeoverError}" style="color:red">
+    有効期限が切れたため、トークンを再発行しました。新しいトークンを入力してください。
+  </div>
+  <form th:action="@{/authentication/gmailauth}" method="post">
+    <input type="hidden" name="authid" th:value="${authid}" />
     <input type="text" name="token" required />
     <button type="submit">送信</button>
   </form>

@@ -39,10 +39,19 @@ public class AuthenticationController {
 
     // トークン認証ページからの受取
     @PostMapping("/authentication/gmailauth")
-    public void authToken(@RequestParam UUID authid, @RequestParam String token) {
-        if (!userAuthRepository.authToken(token, authid)) {
-            // エラー
+    public String authToken(@RequestParam UUID authid, @RequestParam String token, Model model) {
+
+        String result = userAuthRepository.authToken(token, authid);
+
+        if (result.equals("different_token")) {
+            return "redirect:/authentication/gmailauth?tokenError&authid=" + authid;
+        } else if (result.equals("limit_over")) {
+            return "redirect:/authentication/gmailauth?limitError&authid=" + authid;
+        } else if (result.equals("expiration_over")) {
+            return "redirect:/authentication/gmailauth?timeoverError&authid=" + authid;
         }
         userAuthRepository.authCommit(authid);
+        userAuthRepository.deleteNotneeded(authid);
+        return "redirect:/authentication/authsuccess";
     }
 }

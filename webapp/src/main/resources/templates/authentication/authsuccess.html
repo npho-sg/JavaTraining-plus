@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>登録完了</title>
+  <meta http-equiv="refresh" th:content="'5;url=' + @{/login}">
+</head>
+
+<body>
+
+  <h1>登録が完了しました。</h1>
+  <h2>5秒後に自動でページが変わります。</h2>
+  <a th:href="@{/login}">自動で移動しない場合はこちらをクリックしてください。</a>
+
+</body>
+
+</html>
