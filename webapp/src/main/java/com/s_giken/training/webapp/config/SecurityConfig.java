@@ -29,7 +29,10 @@ public class SecurityConfig {
         @Bean
         SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
                 http
-                                .csrf(Customizer.withDefaults())
+                                .csrf(csrf -> csrf
+                                                .ignoringRequestMatchers(PathPatternRequestMatcher
+                                                                .withDefaults()
+                                                                .matcher("/inter/auth")))
                                 .headers((header) -> header.frameOptions((frame) -> frame.sameOrigin()))
                                 .formLogin((form) -> form.loginPage("/login").permitAll())
                                 .oauth2Login(oauth2 -> oauth2
@@ -39,6 +42,12 @@ public class SecurityConfig {
                                 .authorizeHttpRequests((authorize) -> authorize
                                                 // 特例として認証を無視するURL
                                                 .requestMatchers(
+                                                                PathPatternRequestMatcher
+                                                                                .withDefaults()
+                                                                                .matcher("/inter/auth"),
+                                                                PathPatternRequestMatcher
+                                                                                .withDefaults()
+                                                                                .matcher("/authentication/gmailauth"),
                                                                 PathPatternRequestMatcher
                                                                                 .withDefaults()
                                                                                 .matcher("/.well-known/**"),

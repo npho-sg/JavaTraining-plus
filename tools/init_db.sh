@@ -92,8 +92,8 @@ CREATE TABLE IF NOT EXISTS t_gmailuser_add (
     token           VARCHAR NOT NULL,
     expiration      TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP + INTERVAL '5 minutes'),
     limitcount      INT NOT NULL DEFAULT 0,
-    auth_id         UUID NOT NULL DEFAULT gen_random_uuid(),
-    PRIMARY KEY (auth_id)
+    authid         UUID NOT NULL DEFAULT gen_random_uuid(),
+    PRIMARY KEY (authid)
 );
 
 CREATE OR REPLACE FUNCTION prevent_gmail_insert_update() RETURNS trigger AS $$

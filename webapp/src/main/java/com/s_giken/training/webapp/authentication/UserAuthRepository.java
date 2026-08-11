@@ -27,8 +27,8 @@ public class UserAuthRepository {
 
     // gmailユーザー一時登録
     public UUID tempRegist(String username, String password, String gmail, String token) {
-        String sql = "INSERT INTO t_gmailuser_add(username, password, gmail, token)"
-                + "VALUES(?, ?, ?, ?) RETURNING auth_id";
+        String sql = "INSERT INTO t_gmailuser_add(username, password, gmail, token) "
+                + "VALUES(?, ?, ?, ?) RETURNING authid";
         UUID authid = jdbcTemplate.queryForObject(sql, UUID.class, username, password, gmail, token);
         return authid;
     }
@@ -48,6 +48,7 @@ public class UserAuthRepository {
             newtoken = String.format("%06d", random.nextInt(1_000_000));
             sql = "UPDATE t_gmailuser_add SET token = ?, expiration = ?, limitcount = 0 WHERE authid = ?";
             jdbcTemplate.update(sql, newtoken, Timestamp.valueOf(LocalDateTime.now().plusMinutes(5)), authid);
+            System.out.println("新しいトークンを発行しました。" + newtoken);
             return "expiration_out";
         }
 
@@ -62,6 +63,7 @@ public class UserAuthRepository {
             newtoken = String.format("%06d", random.nextInt(1_000_000));
             sql = "UPDATE t_gmailuser_add SET token = ?, expiration = ?, limitcount = 0 WHERE authid = ?";
             jdbcTemplate.update(sql, newtoken, Timestamp.valueOf(LocalDateTime.now().plusMinutes(5)), authid);
+            System.out.println("新しいトークンを発行しました。" + newtoken);
             return "limit_over";
         }
 
@@ -69,8 +71,8 @@ public class UserAuthRepository {
     }
 
     public void authCommit(UUID authid) {
-        String sql = "SET app.gmail_update = 'ON';" + "INSERT INTO t_user (username, password, enable, gmail)"
-                + "SELECT username, password, TRUE, gmail" + "FROM t_gmailuser_add WHERE authid = ?";
+        String sql = "SET app.gmail_update = 'ON';" + "INSERT INTO t_user (username, password, enabled, gmail) "
+                + "SELECT username, password, TRUE, gmail FROM t_gmailuser_add WHERE authid = ?";
         jdbcTemplate.update(sql, authid);
     }
 
