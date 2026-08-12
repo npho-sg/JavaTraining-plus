@@ -6,7 +6,7 @@ GMAIL=$3
 
 APP_PASS="trainingapp"
 
-PASSWORD=$(./mkpwhash.sh "$PASSWORD")
+PASSWORD=$(./mkpwhash.sh "${PASSWORD}")
 
 TOKEN=$(curl -v -X POST \
 "http://localhost:8080/inter/auth?appPass=${APP_PASS}&username=${USERNAME}&password=${PASSWORD}&gmail=${GMAIL}")

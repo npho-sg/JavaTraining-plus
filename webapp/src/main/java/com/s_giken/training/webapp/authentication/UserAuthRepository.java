@@ -70,15 +70,23 @@ public class UserAuthRepository {
         return "success";
     }
 
+    // トークン認証後の本登録
     public void authCommit(UUID authid) {
         String sql = "SET app.gmail_update = 'ON';" + "INSERT INTO t_user (username, password, enabled, gmail) "
                 + "SELECT username, password, TRUE, gmail FROM t_gmailuser_add WHERE authid = ?";
         jdbcTemplate.update(sql, authid);
     }
 
+    // 本登録後は一時登録のレコードを削除する
     public void deleteNotneeded(UUID authid) {
         String sql = "DELETE FROM t_gmailuser_add WHERE authid = ?";
         jdbcTemplate.update(sql, authid);
+    }
+
+    // 不要になったユーザー一時登録レコードの削除
+    public void deleteCashrecord() {
+        String sql = "DELETE FROM t_gmailuser_add WHERE expiration + INTERVAL '1 minute' <= CURRENT_TIMESTAMP";
+        jdbcTemplate.update(sql);
     }
 
 }

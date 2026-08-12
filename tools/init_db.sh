@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS t_gmailuser_add (
     token           VARCHAR NOT NULL,
     expiration      TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP + INTERVAL '5 minutes'),
     limitcount      INT NOT NULL DEFAULT 0,
-    authid         UUID NOT NULL DEFAULT gen_random_uuid(),
+    authid          UUID NOT NULL DEFAULT gen_random_uuid(),
     PRIMARY KEY (authid)
 );
 
@@ -129,7 +129,7 @@ DELETE FROM t_billing_detail_data;
 DELETE FROM t_gmailuser_add;
 
 -- user/password
-INSERT INTO T_USER VALUES ('user', '$argon2id$v=19$m=14,t=2,p=1$argon2id$v=19$m=16384,t=2,p=1$RlFPZHlKa1k4OGRqTEtkNg$0OglBcOo6kATVL9zUpUaJGdPQN5oeh4Okinvqm80R7o', true);
+INSERT INTO T_USER VALUES ('user', '$argon2id$v=19$m=16384,t=2,p=1$TEhHbHZXMzNrWVFEd3Z6SA$WtD/l7mgz7yddN+KaNU2mxqS3EedsNHu1Pe1TBmEzUY', true);
 
 INSERT INTO T_MEMBER VALUES (nextval('t_member_seq'), 'yamada@example.com', '山田　太郎', '東京都千代田区1-1-1', '2026-01-01', NULL, 1, NOW(), NOW());
 
