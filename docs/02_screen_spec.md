@@ -575,3 +575,18 @@ HTTPメソッド
 #### cancel（クリック）
 
 入力された情報を破棄し、**料金情報検索条件画面**に遷移する。
+
+## トークン認証画面
+
+画面ID
+:   `KAP900V010`
+
+パス
+:   `/authentication/gmailauth`
+
+HTTPメソッド
+:   `GET`
+
+### 構成
+
+![](media/screen-KAP900V010-token-auth.png)
