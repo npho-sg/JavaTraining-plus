@@ -49,20 +49,22 @@ public class AuthenticationController {
 
     // トークン認証ページからの受取
     @PostMapping("/authentication/gmailauth")
-    public String authToken(@RequestParam UUID authid, @RequestParam String token, Model model) {
+    public String authToken(@RequestParam UUID authid, @RequestParam String token) {
 
         String result = userAuthRepository.authToken(token, authid);
 
-        if (result.equals("different_token")) {
+        if (result.equals("timeout_or_notfound")) {
+            return "redirect:/authentication/gmailauth?timeoutORnotfound&authid=" + authid;
+        } else if (result.equals("different_token")) {
             return "redirect:/authentication/gmailauth?tokenError&authid=" + authid;
         } else if (result.equals("limit_over")) {
             return "redirect:/authentication/gmailauth?limitError&authid=" + authid;
-        } else if (result.equals("expiration_over")) {
+        } else if (result.equals("expiration_out")) {
             return "redirect:/authentication/gmailauth?timeoverError&authid=" + authid;
         }
         userAuthRepository.authCommit(authid);
         userAuthRepository.deleteNotneeded(authid);
-        return "redirect:/authentication/authsuccess";
+        return "authentication/authsuccess";
     }
 
     // ユーザー作成時の入口

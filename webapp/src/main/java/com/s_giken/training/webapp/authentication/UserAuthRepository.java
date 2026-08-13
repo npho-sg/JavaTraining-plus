@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -38,22 +39,29 @@ public class UserAuthRepository {
 
         SecureRandom random = new SecureRandom();
         String newtoken;
+        Map<String, Object> result;
+        String dbtoken;
+        LocalDateTime expiration;
 
-        String sql = "SELECT token, expiration FROM t_gmailuser_add WHERE authid = ?";
-        Map<String, Object> result = jdbcTemplate.queryForMap(sql, authid);
-        String dbtoken = (String) result.get("token");
-        LocalDateTime expiration = ((Timestamp) result.get("expiration")).toLocalDateTime();
+        try {
+            String sql = "SELECT token, expiration FROM t_gmailuser_add WHERE authid = ?";
+            result = jdbcTemplate.queryForMap(sql, authid);
+            dbtoken = (String) result.get("token");
+            expiration = ((Timestamp) result.get("expiration")).toLocalDateTime();
+        } catch (EmptyResultDataAccessException e) {
+            return "timeout_or_notfound";
+        }
 
         if (expiration.isBefore(LocalDateTime.now())) {
             newtoken = String.format("%06d", random.nextInt(1_000_000));
-            sql = "UPDATE t_gmailuser_add SET token = ?, expiration = ?, limitcount = 0 WHERE authid = ?";
+            String sql = "UPDATE t_gmailuser_add SET token = ?, expiration = ?, limitcount = 0 WHERE authid = ?";
             jdbcTemplate.update(sql, newtoken, Timestamp.valueOf(LocalDateTime.now().plusMinutes(5)), authid);
             System.out.println("新しいトークンを発行しました。" + newtoken);
             return "expiration_out";
         }
 
         if (!dbtoken.equals(token)) {
-            sql = "SELECT limitcount FROM t_gmailuser_add WHERE authid = ?";
+            String sql = "SELECT limitcount FROM t_gmailuser_add WHERE authid = ?";
             Integer limit = jdbcTemplate.queryForObject(sql, Integer.class, authid);
             if (limit < 2) {
                 sql = "UPDATE t_gmailuser_add SET limitcount = limitcount + 1 WHERE authid = ?";
