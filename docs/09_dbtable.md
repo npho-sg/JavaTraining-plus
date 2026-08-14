@@ -149,4 +149,4 @@
 | 4   | 認証キー       | token      | VARCHAR  |      |                   |                           |
 | 5   | 有効期限       | expiration | TIMESTAMP  |      | CURRENT_TIMESTAMP<br> + INTERVAL '5 minutes' | 有効期限5分           |
 | 6   | 施行回数       | limitcount | INT      |      |                   |                           |
-| 7   | 登録ID        | authid      | VARCHAR(26) | P    | GEN_RANDOM_UUID() | idがランダムに自動で採番される |
+| 7   | 認証ID        | authid      | VARCHAR(26) | P    | GEN_RANDOM_UUID() | idがランダムに自動で採番される |
