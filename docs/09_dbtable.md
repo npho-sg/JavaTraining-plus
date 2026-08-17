@@ -12,6 +12,8 @@
 | 請求データ     | T_BILLING_DATA        |      |
 | 請求明細データ | T_BILLING_DETAIL_DATA |      |
 | 請求データ状況 | T_BILLING_STATUS      |      |
+| 管理者情報    |  T_USER              |      |
+| Gmail管理者登録 |  T_GMAILUSER_ADD  |      |
 
 ## 加入者情報◆T_MEMBER
 
