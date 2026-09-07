@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.beans.factory.annotation.Value;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletException;
 
 @Controller
 public class AuthenticationController {
@@ -29,11 +31,14 @@ public class AuthenticationController {
     }
 
     @GetMapping("/userauth/google")
-    public String googleLogin(@AuthenticationPrincipal OAuth2User oauthUser) {
+    public String googleLogin(@AuthenticationPrincipal OAuth2User oauthUser, HttpServletRequest request) {
 
         String gmail = oauthUser.getAttribute("email");
 
         if (!userAuthRepository.searchGmailuser(gmail)) {
+            SecurityContextHolder.clearContext();
+            request.getSession().invalidate();
+
             return "redirect:/login?googleError";
         }
 

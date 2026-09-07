@@ -5,6 +5,8 @@
 
 ## テーブル一覧
 
+## 管理者情報◆T_USER
+
 | 論理テーブル名 | 物理テーブル名        | 備考 |
 | -------------- | --------------------- | ---- |
 | 加入者情報     | T_MEMBER              |      |
@@ -143,10 +145,10 @@
 
 | No. | 論理列名       | 物理列名    | データ型  | 制約 | デフォルト値      | 備考                      |
 | --- | -------------- | ----------- | --------- | ---- | ----------------- | ------------------------- |
-| 1   | ユーザー名     | username   | VARCHAR(255) |      |                   |                           |
-| 2   | パスワード     | password   | VARCHAR(255) |      |                   | argon2でハッシュ化した文字列を格納 |
-| 3   | Gメール        | gmail      | VARCHAR(255) |      |                   |                           |
-| 4   | 認証キー       | token      | VARCHAR  |      |                   |                           |
-| 5   | 有効期限       | expiration | TIMESTAMP  |      | CURRENT_TIMESTAMP<br> + INTERVAL '5 minutes' | 有効期限5分           |
-| 6   | 施行回数       | limitcount | INT      |      |                   |                           |
-| 7   | 認証ID        | authid      | VARCHAR(26) | P    | GEN_RANDOM_UUID() | idがランダムに自動で採番される |
+| 1   | 申請ID        | authid      | VARCHAR(26) | P    | GEN_RANDOM_UUID() | idがランダムに自動で採番される |
+| 2   | ユーザー名     | username   | VARCHAR(255) |      |                   |                           |
+| 3   | パスワード     | password   | VARCHAR(255) |      |                   | argon2でハッシュ化した文字列を格納 |
+| 4   | Gメール        | gmail      | VARCHAR(255) |      |                   |                           |
+| 5   | 認証キー       | token      | VARCHAR(6) |      |                   |                           |
+| 6   | 有効期限       | expiration | TIMESTAMP  |      | CURRENT_TIMESTAMP<br> + INTERVAL '5 minutes' | 有効期限5分           |
+| 7   | 施行回数       | limitcount | INT      |      |                   |                           |

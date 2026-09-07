@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS t_gmailuser_add (
     username        VARCHAR(255) NOT NULL,
     password        VARCHAR(255) NOT NULL,
     gmail           VARCHAR(255) NOT NULL,
-    token           VARCHAR NOT NULL,
+    token           VARCHAR(6) NOT NULL,
     expiration      TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP + INTERVAL '5 minutes'),
     limitcount      INT NOT NULL DEFAULT 0,
     authid          UUID NOT NULL DEFAULT gen_random_uuid(),
