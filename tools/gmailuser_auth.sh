@@ -8,7 +8,10 @@ APP_PASS="trainingapp"
 
 PASSWORD=$(./mkpwhash.sh "${PASSWORD}")
 
-TOKEN=$(curl -v -X POST \
-"http://localhost:8080/inter/auth?appPass=${APP_PASS}&username=${USERNAME}&password=${PASSWORD}&gmail=${GMAIL}")
+TOKEN=$(curl -X POST http://localhost:8080/inter/auth \
+-d "appPass=${APP_PASS}" \
+-d "username=${USERNAME}" \
+-d "password=${PASSWORD}" \
+-d "gmail=${GMAIL}")
 
 echo -e "ハッシュ化されたパスワード：${PASSWORD}\nトークンが発行されました。招待メールのURL転送先に入力してください。${TOKEN}"
