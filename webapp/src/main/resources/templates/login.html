@@ -19,7 +19,7 @@
     <button type="submit">ログイン</button>
   </form>
   <hr>
-  <div th:if="${param.googleError}" class="alert alert-danger" role="alert">
+  <div th:if="${loginError == 'unknownuser'}" class="alert alert-danger" role="alert">
     登録されていないGmailユーザーです。
   </div>
   <a th:href="@{/oauth2/authorization/google}">Googleでログイン</a>

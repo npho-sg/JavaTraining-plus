@@ -16,6 +16,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.beans.factory.annotation.Value;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthenticationController {
@@ -31,15 +34,14 @@ public class AuthenticationController {
     }
 
     @GetMapping("/userauth/google")
-    public String googleLogin(@AuthenticationPrincipal OAuth2User oauthUser, HttpServletRequest request) {
+    public String googleLogin(@AuthenticationPrincipal OAuth2User oauthUser, RedirectAttributes redirectAttributes) {
 
         String gmail = oauthUser.getAttribute("email");
 
         if (!userAuthRepository.searchGmailuser(gmail)) {
-            SecurityContextHolder.clearContext();
-            request.getSession().invalidate();
+            redirectAttributes.addFlashAttribute("loginError", "unkownuser");
 
-            return "redirect:/login?googleError";
+            return "redirect:/login";
         }
 
         return "redirect:/";

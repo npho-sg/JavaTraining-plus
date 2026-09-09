@@ -1,7 +1,11 @@
 package com.s_giken.training.webapp.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 
 /**
@@ -26,7 +30,13 @@ public class RootController {
 	 * @return ログイン画面のテンプレート名
 	 */
 	@GetMapping("/login")
-	public String login() {
+	public String login(HttpServletRequest request, @ModelAttribute("loginError") String errorcode, Model model) {
+
+		if (errorcode.equals("unkownuser")) {
+			request.getSession().invalidate();
+			model.addAttribute("loginError", "unknownuser");
+		}
+
 		return "login";
 	}
 }
